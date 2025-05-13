@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #fff8f0;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h1 {
+            background-color: #ff7f50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .container {
+            margin: 1rem auto;
+        }
+
+        .table {
+            border: 1px solid #ffa07a;
+        }
+
+        .table th {
+            background-color: #ffa07a;
+            color: white;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #fff0e5;
+        }
+
+        .btn-back {
+            background-color: #ff7f50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-back:hover {
+            background-color: #e67348;
+            color: white;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 250px;
+            height: auto;
+        }
+
+        .table-responsive {
+            width: 1900px;
+            margin: 1rem auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Car Price Prediction Results</h1>
+
+
+    <div class="image-container">
+        <!-- Replace "your_image.png" with the actual filename in the static folder -->
+        <img src="{{ url_for('static', filename='driving-concept.jpg') }}" alt="Car Image">
+    </div>
+
+    <div class="table-responsive">
+        {{ table | safe }}
+    </div>
+    <div class="table-responsive">
+        
+    <h2>Comparaison des meilleures prédictions avec les prix réels</h2>
+<img src="data:image/png;base64,{{ plot_image }}" class="img-fluid">
+
+<h2>Nombre de victoires par modèle</h2>
+<img src="data:image/png;base64,{{ wins_image }}" class="img-fluid">
+
+    </div>
+    <br>
+    <a href="/" class="btn-back">← Go back</a>
+
+</body>
+
+</html>
