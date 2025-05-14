@@ -140,11 +140,38 @@ def predict_manual():
         # Encodage
         input_encoded = pd.get_dummies(input_data)
 
-        # Choix du modèle
         if model_choice == "Random Forest":
-            prediction = rf_model.predict(input_encoded.reindex(columns=rf_model.feature_names_in_, fill_value=0))[0]
+            # Get all required form fields
+            seller_type = request.form['seller_type']
+            owner = request.form['owner']
+            mileage = float(request.form['mileage(km/ltr/kg)'])
+            engine = float(request.form['engine'])
+            max_power = float(request.form['max_power'])
+            seats = float(request.form['seats'])
+
+            # Construct full input for Random Forest
+            input_data = pd.DataFrame([{
+                'year': year,
+                'km_driven': km_driven,
+                'fuel': fuel,
+                'seller_type': seller_type,
+                'transmission': transmission,
+                'owner': owner,
+                'mileage(km/ltr/kg)': mileage,
+                'engine': engine,
+                'max_power': max_power,
+                'seats': seats
+            }])
+
+            # Predict using the trained pipeline
+            prediction = rf_model.predict(input_data)[0]
         elif model_choice == "Linear Regression":
-            prediction = lr_model.predict(input_data[['km_driven']])[0]
+            mileage = float(request.form['mileage(km/ltr/kg)'])  # You need to add this input to the form!
+            input_data = pd.DataFrame([{
+                'mileage(km/ltr/kg)': mileage
+            }])
+            prediction = lr_model.predict(input_data)[0]
+
         elif model_choice == "PLS":
             input_encoded = input_encoded.reindex(columns=pls_model.feature_names_in_, fill_value=0)
             prediction = pls_model.predict(input_encoded)[0]

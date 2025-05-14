@@ -542,7 +542,15 @@
             </div>
         </div>
     </div>
-
+    <div class="form-row">
+        <div class="form-col">
+            <div class="form-group">
+                <label for="mileage">Mileage (km/ltr/kg)</label>
+                <input type="number" step="0.1" name="mileage(km/ltr/kg)" id="mileage" class="form-control">
+            </div>
+        </div>
+        
+    </div>
     <div class="form-row">
         <div class="form-col">
             <div class="form-group">
@@ -591,6 +599,58 @@
             </div>
         </div>
     </div>
+    <div id="rf-extra-fields" style="display: none;">
+    <div class="form-row">
+        <div class="form-col">
+            <div class="form-group">
+                <label for="seller_type">Seller Type</label>
+                <select name="seller_type" id="seller_type" class="form-control">
+                    <option value="Individual">Individual</option>
+                    <option value="Dealer">Dealer</option>
+                    <option value="Trustmark Dealer">Trustmark Dealer</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-col">
+            <div class="form-group">
+                <label for="owner">Owner Type</label>
+                <select name="owner" id="owner" class="form-control">
+                    <option value="First Owner">First Owner</option>
+                    <option value="Second Owner">Second Owner</option>
+                    <option value="Third Owner">Third Owner</option>
+                    <option value="Fourth & Above Owner">Fourth & Above Owner</option>
+                    <option value="Test Drive Car">Test Drive Car</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        
+        <div class="form-col">
+            <div class="form-group">
+                <label for="engine">Engine (cc)</label>
+                <input type="number" name="engine" id="engine" class="form-control">
+            </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="form-col">
+            <div class="form-group">
+                <label for="max_power">Max Power (bhp)</label>
+                <input type="number" step="0.1" name="max_power" id="max_power" class="form-control">
+            </div>
+        </div>
+        <div class="form-col">
+            <div class="form-group">
+                <label for="seats">Seats</label>
+                <input type="number" name="seats" id="seats" class="form-control">
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <button type="submit" class="btn btn-submit mt-3">
         <i class="fas fa-calculator mr-2"></i> Calculate Price
@@ -620,6 +680,20 @@
             document.getElementById('file-name').textContent = fileName;
         });
     </script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modelSelect = document.getElementById('model');
+    const extraFields = document.getElementById('rf-extra-fields');
+
+    modelSelect.addEventListener('change', function () {
+        if (modelSelect.value === 'Random Forest') {
+            extraFields.style.display = 'block';
+        } else {
+            extraFields.style.display = 'none';
+        }
+    });
+});
+</script>
 
 </body>
 </html>
