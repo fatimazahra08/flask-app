@@ -1,98 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prediction Results</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #df8a4d;
+            --secondary-color: #cc5500;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --dark-text: #a65825;
+            --light-text: #ecf0f1;
+            --border-radius: 12px;
+            --box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
         body {
-            background-color: #fff8f0;
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark-text);
+            line-height: 1.6;
+            padding-bottom: 50px;
         }
-
-        h1 {
-            background-color: #ff7f50;
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
             color: white;
-            padding: 20px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding-left: 20px;
+        }
+        
+        .navbar-brand:hover {
+            color: var(--light-text);
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            padding: 60px 20px;
             text-align: center;
-            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
         }
-
-        .container {
-            margin: 1rem auto;
+        
+        .page-header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://via.placeholder.com/1920x300') center/cover;
+            opacity: 0.1;
+            z-index: 0;
         }
-
-        .table {
-            border: 1px solid #ffa07a;
+        
+        .page-header h1 {
+            font-weight: 700;
+            font-size: 2.8rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
         }
-
-        .table th {
-            background-color: #ffa07a;
-            color: white;
+        
+        .page-header p {
+            margin-top: 15px;
+            font-weight: 300;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
         }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #fff0e5;
+        
+        .main-container {
+            max-width: 1200px;
+            margin: -50px auto 40px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 40px;
+            position: relative;
+            z-index: 10;
         }
-
-        .btn-back {
-            background-color: #ff7f50;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-
-        .btn-back:hover {
-            background-color: #e67348;
-            color: white;
-        }
-
+        
         .image-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
         }
-
+        
+        .image-container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.3), rgba(41, 128, 185, 0.3));
+            z-index: 1;
+            opacity: 0.6;
+        }
+        
         .image-container img {
-            max-width: 250px;
+            max-width: 100%;
+            height: auto;
+            transition: var(--transition);
+            display: block;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .data-table thead th {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 18px 15px;
+            vertical-align: middle;
+            border: none;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .data-table tbody tr {
+            transition: var(--transition);
+        }
+        
+        .data-table tbody tr:nth-child(odd) {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .data-table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .data-table td {
+            padding: 18px 15px;
+            border-top: 1px solid #e9ecef;
+            vertical-align: middle;
+            font-weight: 400;
+        }
+        
+        .table-responsive {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 50px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .analysis-section {
+            margin-top: 60px;
+            margin-bottom: 60px;
+            padding: 30px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .analysis-section h2 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--dark-text);
+            text-align: center;
+            padding-bottom: 15px;
+            position: relative;
+        }
+        
+        .analysis-section h2:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .visualization-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .visualization-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .visualization-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            transition: var(--transition);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .visualization-card:hover img {
+            transform: scale(1.02);
+        }
+        
+        .btn-back {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+            transition: var(--transition);
+            text-decoration: none;
+            margin: 10px;
+            text-align: center;
+        }
+        
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            text-decoration: none;
+        }
+        
+        .btn-back i {
+            margin-right: 10px;
+        }
+        
+        .action-bar {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+            transition: var(--transition);
+            text-decoration: none;
+            margin: 10px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .download-btn i {
+            margin-right: 10px;
+        }
+        
+        .prediction-highlights {
+            background: linear-gradient(135deg, #ffffff, #f9f9f9);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 40px;
+        }
+        
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            flex: 1;
+            min-width: 220px;
+            max-width: 300px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: var(--transition);
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #7f8c8d;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+        
+        .chart-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark-text);
+            text-align: center;
+        }
+        
+        .img-fluid {
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            max-width: 100%;
             height: auto;
         }
-
-        .table-responsive {
-            width: 1900px;
-            margin: 1rem auto;
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            gap: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .main-container {
+                padding: 25px 15px;
+                margin-top: -30px;
+            }
+            
+            .stat-card {
+                min-width: 100%;
+            }
+            
+            .analysis-section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .btn-back, .download-btn {
+                width: 100%;
+                margin: 5px 0;
+            }
         }
     </style>
 </head>
 
 <body>
+    <!-- Navigation Bar -->
+   
 
-    <h1>Car Price Prediction Results</h1>
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Car Price Prediction Results</h1>
+            <p>Discover how our advanced models predict car prices with high accuracy</p>
+        </div>
+    </header>
 
+    <!-- Main Content -->
+    <div class="container main-container">
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='driving-concept.jpg') }}" alt="Car Image">
+        </div>
 
-    <div class="image-container">
-        <!-- Replace "your_image.png" with the actual filename in the static folder -->
-        <img src="{{ url_for('static', filename='driving-concept.jpg') }}" alt="Car Image">
-    </div>
-
-    <div class="table-responsive">
-        {{ table | safe }}
-    </div>
-    <div class="table-responsive">
+        <div class="analysis-section">
+            <h2>Prediction Results</h2>
+            <div class="table-responsive">
+                {{ table | safe }}
+            </div>
+        </div>
         
-    <h2>Comparaison des meilleures prédictions avec les prix réels</h2>
-<img src="data:image/png;base64,{{ plot_image }}" class="img-fluid">
-
-<h2>Nombre de victoires par modèle</h2>
-<img src="data:image/png;base64,{{ wins_image }}" class="img-fluid">
-
+        <div class="analysis-section">
+            <h2>Visual Analysis</h2>
+            
+            <div class="visualization-card">
+                <div class="chart-title">Comparaison des meilleures prédictions avec les prix réels</div>
+                <img src="data:image/png;base64,{{ plot_image }}" class="img-fluid">
+            </div>
+            
+            <div class="visualization-card">
+                <div class="chart-title">Nombre de victoires par modèle</div>
+                <img src="data:image/png;base64,{{ wins_image }}" class="img-fluid">
+            </div>
+        </div>
+        
+        <div class="action-bar">
+            <a href="/" class="btn-back"><i class="fas fa-arrow-left"></i> Go back</a>
+           
+        </div>
     </div>
-    <br>
-    <a href="/" class="btn-back">← Go back</a>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
-
 </html>

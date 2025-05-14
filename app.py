@@ -119,6 +119,49 @@ def create_comparison_plot(actual, predictions):
 
     return image_base64
 
+@app.route('/predict_manual', methods=['POST'])
+def predict_manual():
+    try:
+        # Récupération des données du formulaire
+        year = int(request.form['year'])
+        km_driven = int(request.form['km_driven'])
+        fuel = request.form['fuel']
+        transmission = request.form['transmission']
+        model_choice = request.form['model']
+
+        # Construction du DataFrame avec les données
+        input_data = pd.DataFrame([{
+            'year': year,
+            'km_driven': km_driven,
+            'fuel': fuel,
+            'transmission': transmission
+        }])
+
+        # Encodage
+        input_encoded = pd.get_dummies(input_data)
+
+        # Choix du modèle
+        if model_choice == "Random Forest":
+            prediction = rf_model.predict(input_encoded.reindex(columns=rf_model.feature_names_in_, fill_value=0))[0]
+        elif model_choice == "Linear Regression":
+            prediction = lr_model.predict(input_data[['km_driven']])[0]
+        elif model_choice == "PLS":
+            input_encoded = input_encoded.reindex(columns=pls_model.feature_names_in_, fill_value=0)
+            prediction = pls_model.predict(input_encoded)[0]
+        elif model_choice == "Gradient Boosting":
+            input_encoded = input_encoded.reindex(columns=gb_model.feature_names_in_, fill_value=0)
+            prediction = gb_model.predict(input_encoded)[0]
+        elif model_choice == "Ridge":
+            input_encoded = input_encoded.reindex(columns=ridge_model.feature_names_in_, fill_value=0)
+            prediction = ridge_model.predict(input_encoded)[0]
+        else:
+            return "Modèle non reconnu", 400
+
+        # Affichage du résultat
+        return render_template("manual_result.html", prediction=round(prediction, 2), model=model_choice)
+
+    except Exception as e:
+        return f"Erreur lors de la prédiction : {str(e)}", 500
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -200,7 +243,7 @@ def index():
                 chart_img = create_comparison_plot(actual_prices, predictions)
 
             # Convert to HTML table
-            result_table = original_df.to_html(
+            result_table = original_df.head(10).to_html(
                 classes='table table-bordered table-striped',
                 index=False,
                 float_format='{:,.2f}'.format
@@ -223,4 +266,4 @@ def index():
     return render_template('index.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
